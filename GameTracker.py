@@ -6,19 +6,51 @@ class GameTracker:
     def __init__(self, data, titles):
         self.data = data
         self.titles = titles
+        self.largest_game_data = max(len(x) for x in self.data)
 
-    def plot_monthly_average_player_counts(self):
+    def setup_graph(self):
+        bf_title_index = -1
+        try:
+            bf_title_index = self.titles.index("Battlefield™ V")
+        except ValueError:
+            print("title not found")
+            try:
+                bf_title_index = self.titles.index("Battlefield 1 ™")
+            except ValueError:
+                print("title not found")
+                try:
+                    bf_title_index = self.titles.index("Battlefield 4™")
+                except ValueError:
+                    print("title not found")
+
+        if bf_title_index != -1:
+            first_battlefield_steam_data_index = self.largest_game_data - len(self.data[bf_title_index])
+            plt.axvline(x=first_battlefield_steam_data_index, color="k", linestyle=":", label="Earliest Battlefield "
+                                                                                              "Steam Data")
+
+        bf_2042_title_index = -1
+        try:
+            bf_2042_title_index = self.titles.index("Battlefield™ 2042")
+        except ValueError:
+            print("Battlefield™ 2042 title not found")
+
+        if bf_2042_title_index != -1:
+            bf2042_title_index = self.titles.index("Battlefield™ 2042")
+            first_battlefield2042_steam_data_index = self.largest_game_data - len(self.data[bf2042_title_index])
+            plt.axvline(x=first_battlefield2042_steam_data_index, color="#40dfbd", linestyle=":", label="Battlefield "
+                                                                                                        "2042 Release")
+
         plt.axhline(y=0, color="0.85", linestyle="-")
-        plt.axvline(x=0, color="k", linestyle=":", label="Earliest Battlefield Steam Data")
-        plt.axvline(x=len(max(self.data)) - len(min(self.data)), color="#40dfbd", linestyle=":",
-                    label="Battlefield 2042 "
-                          "Release")
 
-        for i in range(len(max(self.data)) - len(min(self.data))):
-            min(self.data).append(["N/A", "NaN", "NaN", "NaN", "NaN"])
+        for game in self.data:
+            for i in range(self.largest_game_data - len(game)):
+                game.append(["N/A", "NaN", "NaN", "NaN", "NaN"])
 
         for game in self.data:
             game.reverse()
+
+    def plot_monthly_average_player_counts(self):
+        self.setup_graph()
 
         count = 0
         for game in self.data:
@@ -51,17 +83,7 @@ class GameTracker:
         plt.show()
 
     def plot_monthly_peak_players(self):
-        plt.axhline(y=0, color="0.85", linestyle="-")
-        plt.axvline(x=0, color="k", linestyle=":", label="Earliest Battlefield Steam Data")
-        plt.axvline(x=len(max(self.data)) - len(min(self.data)), color="#40dfbd", linestyle=":", label="Battlefield "
-                                                                                                       "2042 "
-                                                                                                       "Release")
-
-        for i in range(len(max(self.data)) - len(min(self.data))):
-            min(self.data).append(["N/A", "NaN", "NaN", "NaN", "NaN"])
-
-        for game in self.data:
-            game.reverse()
+        self.setup_graph()
 
         count = 0
         for game in self.data:
@@ -94,17 +116,7 @@ class GameTracker:
         plt.show()
 
     def plot_monthly_gain(self):
-        plt.axhline(y=0, color="0.85", linestyle="-")
-        plt.axvline(x=0, color="k", linestyle=":", label="Earliest Battlefield Steam Data")
-        plt.axvline(x=len(max(self.data)) - len(min(self.data)), color="#40dfbd", linestyle=":",
-                    label="Battlefield 2042 "
-                          "Release")
-
-        for i in range(len(max(self.data)) - len(min(self.data))):
-            min(self.data).append(["N/A", "NaN", "NaN", "NaN", "NaN"])
-
-        for game in self.data:
-            game.reverse()
+        self.setup_graph()
 
         count = 0
         for game in self.data:
