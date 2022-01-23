@@ -18,9 +18,9 @@ class DataRetriever:
 
     def get_data(self):
         soup = self.get_soup()
-        table_2042 = soup.find("table", {"class", "common-table"})
+        table = soup.find("table", {"class": "common-table"})
 
-        table_body = table_2042.find("tbody")
+        table_body = table.find("tbody")
         data = []
         rows = table_body.find_all("tr")
         for row in rows:
@@ -28,4 +28,11 @@ class DataRetriever:
             cols = [ele.text.strip() for ele in cols]
             data.append([ele for ele in cols if ele])
 
-        return data
+        title = self.get_title()
+        return data, title
+
+    def get_title(self):
+        soup = self.get_soup()
+        title = soup.find("h1", {"id": "app-title"})
+        title = title.find("a").text
+        return title
