@@ -74,7 +74,7 @@ class GameTracker:
             plt.subplots_adjust(bottom=0.3)
             plt.xlabel("30 Day Period", labelpad=10)
             plt.ylabel("Avg. Player Count", labelpad=20)
-            plt.title("Steam Battlefield Data", pad=20)
+            plt.title("Steam Data", pad=20)
             plt.plot(df["Month"], df["Avg. Player Count"], label=self.titles[count])
             plt.tight_layout()
             count += 1
@@ -107,7 +107,7 @@ class GameTracker:
             plt.subplots_adjust(bottom=0.3)
             plt.xlabel("30 Day Period", labelpad=10)
             plt.ylabel("Peak Players", labelpad=20)
-            plt.title("Steam Battlefield Data", pad=20)
+            plt.title("Steam Data", pad=20)
             plt.plot(df["Month"], df["Peak Players"], label=self.titles[count])
             plt.tight_layout()
             count += 1
@@ -149,7 +149,7 @@ class GameTracker:
             plt.subplots_adjust(bottom=0.3)
             plt.xlabel("30 Day Period", labelpad=10)
             plt.ylabel("Avg. Players Gained", labelpad=20)
-            plt.title("Steam Battlefield Data", pad=20)
+            plt.title("Steam Data", pad=20)
             plt.plot(df["Month"], df["Avg. Players Gained"], label=self.titles[count])
             plt.tight_layout()
             count += 1
