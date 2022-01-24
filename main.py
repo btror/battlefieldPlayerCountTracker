@@ -1,3 +1,5 @@
+from matplotlib import pyplot as plt
+
 from GameTracker import GameTracker
 from DataRetriever import DataRetriever
 
@@ -44,5 +46,9 @@ game_titles = [  # put the game title in the same order as the list above
 steam_data = GameTracker(game_data, game_titles)
 
 steam_data.plot_monthly_average_player_counts()
-# steam_data.plot_monthly_peak_players()
-# steam_data.plot_monthly_gain()
+steam_data.plot_monthly_peak_players()
+steam_data.plot_monthly_gain()
+
+plt.legend()
+plt.tight_layout(pad=0.4, w_pad=0.5, h_pad=1.0)
+plt.show()
