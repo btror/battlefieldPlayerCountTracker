@@ -22,9 +22,9 @@ game_data = [  # put the game with the oldest steam data at the bottom
     data_bf5,
     data_bf1,
     data_bf4,
-    data_insurgency_sandstorm,
-    data_hll,
-    data_ww3,
+    # data_insurgency_sandstorm,
+    # data_hll,
+    # data_ww3,
     # data_csgo,
     # data_bo2,
     # data_apex_legends
@@ -35,9 +35,9 @@ game_titles = [  # put the game title in the same order as the list above
     title_bf5,
     title_bf1,
     title_bf4,
-    title_insurgency_sandstorm,
-    title_hll,
-    title_ww3,
+    # title_insurgency_sandstorm,
+    # title_hll,
+    # title_ww3,
     # title_csgo,
     # title_bo2,
     # title_apex_legends
@@ -50,5 +50,4 @@ steam_data.plot_monthly_peak_players()
 steam_data.plot_monthly_gain()
 
 plt.legend()
-plt.tight_layout(pad=0.4, w_pad=0.5, h_pad=1.0)
 plt.show()
