@@ -1,3 +1,6 @@
+import math
+
+import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
 from matplotlib.widgets import Slider
@@ -73,9 +76,12 @@ class GameTracker:
                                    label="Battlefield 2042 Release")
             self.axs[1, 0].axvline(x=first_battlefield2042_steam_data_index, color="#40dfbd", linestyle=":",
                                    label="Battlefield 2042 Release")
+            self.axs[1, 1].axvline(x=first_battlefield2042_steam_data_index, color="#40dfbd", linestyle=":",
+                                   label="Battlefield 2042 Release")
         self.axs[0, 0].axhline(y=0, color="0.85", linestyle="-")
         self.axs[0, 1].axhline(y=0, color="0.85", linestyle="-")
         self.axs[1, 0].axhline(y=0, color="0.85", linestyle="-")
+        self.axs[1, 1].axhline(y=0, color="0.85", linestyle="-")
         for game in self.data:
             for i in range(self.largest_game_data - len(game)):
                 game.append(["N/A", "NaN", "NaN", "NaN", "NaN"])
@@ -105,7 +111,6 @@ class GameTracker:
             self.axs[0, 0].set_title("Avg. Player Count", fontsize=9)
             self.axs[0, 0].plot(df["Month"], df["Avg. Player Count"], label=self.titles[count])
             count += 1
-        # self.slider_position_1.on_changed(self.update)
 
     def plot_monthly_peak_players(self):
         count = 0
@@ -163,10 +168,46 @@ class GameTracker:
             self.axs[1, 0].plot(df["Month"], df["Avg. Players Gained"], label=self.titles[count])
             count += 1
 
+    def plot_trends(self):
+        count = 0
+        for game in self.data:
+            average_player_count = []
+            month_name = []
+            month = []
+            i = 0
+            for item in game:
+                average_player_count.append(float(item[1]))
+                month_name.append(item[0])
+                month.append(i)
+                i += 1
+            game = {
+                "Month": month,
+                "Avg. Player Count": average_player_count
+            }
+            df = pd.DataFrame(game, columns=["Month", "Avg. Player Count"])
+            self.axs[1, 1].set_xticks(df["Month"], month_name, rotation=80, fontsize=6)
+            self.axs[1, 1].tick_params(axis="y", labelsize=5)
+            self.axs[1, 1].set_ylabel("Players", fontsize=9)
+            self.axs[1, 1].set_title("Game-life Trend", fontsize=9)
+            self.axs[1, 1].scatter(df["Month"], df["Avg. Player Count"], label=self.titles[count], s=2)
+            # create trendlines
+            month_temp = []
+            apc_temp = []
+            for i in range(len(month)):
+                if not math.isnan(average_player_count[i]):
+                    month_temp.append(month[i])
+                    apc_temp.append(average_player_count[i])
+
+            z = np.polyfit(month_temp, apc_temp, 1)
+            p = np.poly1d(z)
+            self.axs[1, 1].plot(month_temp, p(month_temp), "m-")
+            count += 1
+
     def update(self, val):
         pos_1 = self.slider_position_1.val
         zoom_level = self.largest_game_data - self.slider_position_2.val + 1
         self.axs[0, 0].axis([pos_1, pos_1 + zoom_level, min(self.avg_players), max(self.avg_players)])
         self.axs[0, 1].axis([pos_1, pos_1 + zoom_level, min(self.peak_players), max(self.peak_players)])
         self.axs[1, 0].axis([pos_1, pos_1 + zoom_level, min(self.gain_players), max(self.avg_players)])
+        self.axs[1, 1].axis([pos_1, pos_1 + zoom_level, min(self.avg_players), max(self.avg_players)])
         self.fig.canvas.draw_idle()
