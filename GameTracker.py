@@ -1,5 +1,4 @@
 import math
-
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
@@ -11,9 +10,16 @@ class GameTracker:
         self.data = data
         self.titles = titles
         self.largest_game_data = max(len(x) for x in self.data)
-        self.fig, self.axs = plt.subplots(2, 2)
-        self.fig.tight_layout(pad=6.0)
+        self.fig, self.axs = plt.subplots(2, 2, figsize=(10, 5))
+        # self.fig.tight_layout(pad=6.0)
+        self.fig.subplots_adjust(left=None, bottom=.2, right=.675, top=.85, wspace=.4, hspace=.95)
+
         self.setup_graph()
+        self.plot_monthly_average_player_counts()
+        self.plot_monthly_peak_players()
+        self.plot_monthly_gain()
+        self.plot_trends()
+
         self.axis_position_1 = plt.axes([0.18, 0.95, 0.65, 0.03], facecolor="white")
         self.slider_position_1 = Slider(self.axis_position_1, "Position", 0, self.largest_game_data)
         self.slider_position_1.valtext.set_visible(False)
@@ -36,6 +42,14 @@ class GameTracker:
 
         self.slider_position_1.on_changed(self.update)
         self.slider_position_2.on_changed(self.update)
+
+        lines = []
+        labels = []
+
+        axLine, axLabel = self.fig.axes[0].get_legend_handles_labels()
+        lines.extend(axLine)
+        labels.extend(axLabel)
+        self.fig.legend(lines, labels, loc="center right")
 
     def setup_graph(self):
         bf_title_index = -1
@@ -200,7 +214,7 @@ class GameTracker:
 
             z = np.polyfit(month_temp, apc_temp, 1)
             p = np.poly1d(z)
-            self.axs[1, 1].plot(month_temp, p(month_temp), "m-")
+            self.axs[1, 1].plot(month_temp, p(month_temp))
             count += 1
 
     def update(self, val):
