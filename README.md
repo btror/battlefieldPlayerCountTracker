@@ -14,5 +14,5 @@ Webscraper collecting Battlefield game data from <a href="https://steamcharts.co
 
 
 <img src="res/screenshot_1.PNG" width="600" height="350">
-<br><br>
+<br>
 <img src="res/screenshot_2.PNG" width="600" height="350">
